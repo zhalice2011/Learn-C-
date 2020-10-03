@@ -6,28 +6,109 @@
 //
 
 #include <iostream>
+#include <string>
+#include <vector>
+
 using namespace std;
 
-// 编写代码更改指针的值  and  更改指针所指对象的值
-int main() {
-    int value = 0;  // 定义一个值
-    int value2 = 1;  // 定义一个值
-    int *pVoid = &value2;
+int factorial (int val) {
+    return val * val * val;
+}
 
-    int *pValue = &value; // 定义一个指针指向这个值
-    
-    cout << "原来的指针" << pValue << endl;
-    cout << "原来的指针的值" << *pValue  << endl;
-    
-    // 1. 更改指针的值
-    //    pValue = pVoid;
-    
-    // 2. 更改指针所指对象的值
-    *pValue = 3;
-    
-    cout << "修改后的指针" << pValue << endl;
-    cout << "修改后的指针的值" << *pValue  << endl;
-    
-    
+unsigned count () {
+    static int countNumber = 0;
+    countNumber ++;
+    return countNumber;
+}
+
+class Window_mgr {
+public:
+    void clear();
+};
+
+
+class Screen {
+friend void Window_mgr::clear();
+private:
+    unsigned height = 0, width = 0;
+    unsigned cursor = 0;
+    string contents;
+public:
+    Screen() = default; // 默认构造函数
+    Screen(unsigned ht, unsigned wd) : height(ht), width(wd), contents(ht * wd, ' ' ) {};
+    Screen(unsigned ht, unsigned wd, char c): height(ht), width(wd), contents(ht * wd, ' ') {};
+public:
+    Screen& move(unsigned r, unsigned c) {
+        cursor = r * width + c;
+        return *this;
+    }
+    Screen& set(char ch) {
+        contents[ cursor ] = ch;
+        return *this;
+    }
+    Screen& set(unsigned r, unsigned c, char ch) {
+        contents[ r * width + c ] = ch;
+        return *this;
+    }
+    Screen& display() {
+        cout << contents;
+        return *this;
+    }
+};
+//
+//Screen::pos ht = 24, wd = 80;
+//
+//Screen::pos Screen::size() const {
+//    return height * width;
+//}
+
+void Window_mgr::clear() {
+    Screen myScreen(10, 20, 'X');
+    cout << "清理之前myScreen的内容是:" << endl;
+    cout << myScreen.contents << endl;
+    myScreen.contents = "";
+    cout << "清理之后myScreen的内容是:" << endl;
+    cout << myScreen.contents << endl;
+};
+
+
+int main() {
+    Window_mgr w;
+    w.clear();
     return 0;
 }
+
+class Sales_data {
+    private:
+        string bookNo;
+        unsigned units_sold = 0;
+        double sellingprice = 0.0;
+        double saleprice = 0.0;
+        double discount = 0.0;
+    public:
+        string isbin() const { return bookNo; }
+        Sales_data & combine (const Sales_data & rhs) {
+            units_sold += rhs.units_sold;
+            return *this;
+        };
+};
+
+// 编写一个Person的类
+class Person {
+private:
+    string strName; // 姓名
+    string strAddress; // 地址
+public:
+    Person() = default;
+    Person(const string &name, const string &add) {
+        strName = name;
+        strAddress = add;
+    }
+//    Person(std::istream &is) { is >> *this; }
+public:
+    string getName() const { return strName; }  // 返回姓名
+    string getAddress() const { return strAddress; } // 返回地址
+};
+
+
+
