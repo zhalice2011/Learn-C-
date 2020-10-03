@@ -112,3 +112,33 @@ public:
 
 
 
+// 构造一个Book类 - 大理
+class Book2 {
+private:
+    string name;
+    string NO;
+    double price;
+    string author;
+    string address;
+public:
+    Book2() = default();
+    Book2(string name, string NO, ) {};
+}
+
+// by Primer Book
+class Book {
+private:
+    string Name, ISBN, Author, Publisher;
+    double Price;
+public:
+    Book() = default;
+    Book(const string &n, const string &I, double pr, const string &a, const string &p) {
+        Name = n;
+        ISBN = I;
+        Price = pr;
+        Author = a;
+        Publisher = p;
+    };
+    Book(std::istream &is) { is >> *this };
+};
+
